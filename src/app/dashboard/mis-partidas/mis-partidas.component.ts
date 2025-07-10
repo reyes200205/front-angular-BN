@@ -22,7 +22,7 @@ export class MisPartidasComponent implements OnInit {
   partidas: Partida[] = [];
   loading = false;
   error: string | null = null;
-  filtro: 'Ganada' | 'Perdida' | '' = ''; // filtro opcional
+  filtro: 'Ganada' | 'Perdida' | '' = ''; 
 
   constructor(
     private partidaService: PartidaService,
@@ -31,7 +31,6 @@ export class MisPartidasComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Leer filtro desde query params
     this.route.queryParams.subscribe(params => {
       this.filtro = params['filtro'] || '';
       this.cargarPartidas();
@@ -54,7 +53,7 @@ export class MisPartidasComponent implements OnInit {
               oponente: partida.oponente,
               estado: this.normalizarEstado(partida.estado),
               resultado: partida.resultado,
-              createdAt: partida.created_at, // ojo la propiedad viene con guion bajo
+              createdAt: partida.created_at,
             }));
           } else {
             this.error = 'Error al cargar las partidas filtradas';
