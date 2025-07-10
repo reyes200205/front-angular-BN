@@ -1,6 +1,5 @@
-// mis-partidas.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PartidaService } from '../../core/services/partida.service';
 import { CommonModule } from '@angular/common';
 
@@ -23,45 +22,77 @@ export class MisPartidasComponent implements OnInit {
   partidas: Partida[] = [];
   loading = false;
   error: string | null = null;
+  filtro: 'Ganada' | 'Perdida' | '' = ''; // filtro opcional
 
   constructor(
     private partidaService: PartidaService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.cargarPartidas();
+    // Leer filtro desde query params
+    this.route.queryParams.subscribe(params => {
+      this.filtro = params['filtro'] || '';
+      this.cargarPartidas();
+    });
   }
 
   cargarPartidas(): void {
-  this.loading = true;
-  this.error = null;
-  
-  this.partidaService.getMisPartidas().subscribe({
-    next: (response) => {
-      console.log('Respuesta de mis partidas:', response);
-      if (response.success) {
-        this.partidas = response.data.map(partida => ({
-          id: partida.id,
-          nombre: partida.nombre,
-          oponente: partida.oponente,
-          estado: this.normalizarEstado(partida.estado),
-          resultado: partida.resultado,
-          createdAt: partida.createdAt,
-          
-        }));
-      } else {
-        this.error = 'Error al cargar las partidas';
-      }
-      this.loading = false;
-    },
-    error: (error) => {
-      this.error = 'Error de conexión';
-      console.error('Error al cargar partidas:', error);
-      this.loading = false;
+    this.loading = true;
+    this.error = null;
+
+    if (this.filtro === 'Ganada' || this.filtro === 'Perdida') {
+      
+      const tipo = this.filtro === 'Ganada' ? 'ganadas' : 'perdidas';
+      this.partidaService.getPartidasFiltradas(tipo).subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.partidas = response.partidas.map(partida => ({
+              id: partida.id,
+              nombre: partida.nombre,
+              oponente: partida.oponente,
+              estado: this.normalizarEstado(partida.estado),
+              resultado: partida.resultado,
+              createdAt: partida.created_at, // ojo la propiedad viene con guion bajo
+            }));
+          } else {
+            this.error = 'Error al cargar las partidas filtradas';
+          }
+          this.loading = false;
+        },
+        error: (error) => {
+          this.error = 'Error de conexión al cargar partidas filtradas';
+          console.error('Error al cargar partidas filtradas:', error);
+          this.loading = false;
+        }
+      });
+    } else {
+    
+      this.partidaService.getMisPartidas().subscribe({
+        next: (response) => {
+          if (response.success) {
+            this.partidas = response.data.map(partida => ({
+              id: partida.id,
+              nombre: partida.nombre,
+              oponente: partida.oponente,
+              estado: this.normalizarEstado(partida.estado),
+              resultado: partida.resultado,
+              createdAt: partida.createdAt,
+            }));
+          } else {
+            this.error = 'Error al cargar las partidas';
+          }
+          this.loading = false;
+        },
+        error: (error) => {
+          this.error = 'Error de conexión al cargar partidas';
+          console.error('Error al cargar partidas:', error);
+          this.loading = false;
+        }
+      });
     }
-  });
-}
+  }
 
   private normalizarEstado(estado: string): 'en_curso' | 'finalizada' | 'esperando' {
     switch (estado) {

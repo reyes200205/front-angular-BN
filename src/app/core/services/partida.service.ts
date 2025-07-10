@@ -210,7 +210,21 @@ export class PartidaService {
   }
 
 
+ getEstadisticas(): Observable<{ success: boolean; ganadas: number; perdidas: number }> {
+    return this.http.get<{ success: boolean; ganadas: number; perdidas: number }>(
+      `${this.apiUrl}/estadisticas`
+    );
+  }
 
+  getPartidasFiltradas(tipo: 'ganadas' | 'perdidas'): Observable<{
+    success: boolean;
+    partidas: any[];
+    tipo: string;
+  }> {
+    return this.http.get<{ success: boolean; partidas: any[]; tipo: string }>(
+      `${this.apiUrl}/estadisticas/partidas/${tipo}`
+    );
+  }
    obtenerDetalle(id: string | number, from: string) {
     return this.http.get<any>(`${this.apiUrl}/detalle-partida/${id}`, {
       params: { from },
