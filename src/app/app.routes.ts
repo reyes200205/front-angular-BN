@@ -11,6 +11,7 @@ import { PartidaComponent } from './dashboard/partida/partida.component';
 import { PartidasIndexComponent } from './dashboard/partidas-index/partidas-index.component';
 import { MisPartidasComponent } from './dashboard/mis-partidas/mis-partidas.component';
 import { DetallePartidaComponent } from './dashboard/detalle-partida/detalle-partida.component';
+import { EstadisticasComponent } from './dashboard/estadisticas/estadisticas.component';
 
 export const routes: Routes = [
   {
@@ -62,11 +63,18 @@ export const routes: Routes = [
       {
         path: 'partidas/:id',
         component: DetallePartidaComponent
+      },
+      {
+        path: 'estadisticas',
+        loadComponent: () =>
+          import('./dashboard/estadisticas/estadisticas.component').then(
+            (m) => m.EstadisticasComponent
+          )
       }
     ]
   },
   {
     path: '**',
     redirectTo: ''
-  }
+  },
 ];
