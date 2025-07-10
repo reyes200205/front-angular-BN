@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Partida {
   id: number;
@@ -76,7 +77,7 @@ export interface CreatePartidaApiData {
   providedIn: 'root',
 })
 export class PartidaService {
-  private apiUrl = 'http://localhost:3333';
+  private apiUrl = environment.apiUrl; 
   private partidasUrl = `${this.apiUrl}/partidas`;
 
   constructor(private http: HttpClient) {}

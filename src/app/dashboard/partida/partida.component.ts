@@ -6,6 +6,7 @@ import { switchMap, catchError } from 'rxjs/operators';
 import { TableroComponent } from '../tablero/tablero.component';
 import { of } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 export interface Usuario {
   id: number;
@@ -79,7 +80,7 @@ export class PartidaComponent implements OnInit, OnDestroy {
   private pollingSubscription?: Subscription;
   private mensajeTimeout?: any;
   
-  apiUrl: string = 'http://localhost:3333';
+  apiUrl: string = environment.apiUrl;
   constructor(
     private http: HttpClient,
     private router: Router,
