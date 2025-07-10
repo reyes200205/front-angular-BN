@@ -13,6 +13,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 export interface User {
   id: number;
@@ -51,7 +52,7 @@ export interface LoginData {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3333';
+  private apiUrl = environment.apiUrl;
   private token_key = 'auth_token';
   private user_key = 'auth_user';
 

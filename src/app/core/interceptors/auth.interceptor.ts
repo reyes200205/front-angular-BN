@@ -19,6 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (token && !isAuthRoute) {
     req = req.clone({
       setHeaders: {
+        'ngrok-skip-browser-warning': 'true',
         Authorization: `Bearer ${token}`,
       },
     });
