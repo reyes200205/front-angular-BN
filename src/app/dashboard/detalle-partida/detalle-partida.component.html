@@ -1,0 +1,91 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">
+      Detalle de Partida #{{ partida?.id }}
+    </h1>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+  </div>
+
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+    {{ error }}
+  </div>
+
+  <div *ngIf="partida && !loading" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    
+    <!-- Tablero del jugador actual -->
+    <div *ngIf="miJugador" class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">
+        Tu tablero ({{ miJugador.usuario.name }})
+      </h2>
+      
+      <app-tablero
+        [esPropio]="true"
+        [nombreJugador]="miJugador.usuario.name"
+        [posicionesBarcos]="posicionesBarcosOponente"
+        [disparos]="disparosRecibidosOponente"
+        [puedeDisparar]="false"
+        [mostrarBarcos]="true"
+        [mostrarInfo]="false">
+      </app-tablero>
+
+      <div class="mt-6">
+        <h3 class="text-lg font-semibold mb-3 text-gray-700">Movimientos recibidos:</h3>
+        <div class="max-h-48 overflow-y-auto">
+          <ul class="space-y-2">
+            <li *ngFor="let mov of miJugador.movimientos_defensor; let i = index" 
+                class="flex items-center justify-between p-2 bg-gray-50 rounded">
+              <span class="font-medium">{{ mov.coordenada }}</span>
+              <span [class]="obtenerClaseResultado(mov.acierto, mov.hundido)">
+                {{ obtenerTextoResultado(mov.acierto, mov.hundido) }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tablero del oponente -->
+    <div *ngIf="oponenteJugador" class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold mb-4 text-gray-800">
+        Tablero de {{ oponenteJugador.usuario.name }}
+      </h2>
+      
+      <app-tablero
+        [esPropio]="false"
+        [nombreJugador]="oponenteJugador.usuario.name"
+        [posicionesBarcos]="posicionesBarcosJugador"
+        [disparos]="disparosRecibidosJugador"
+        [puedeDisparar]="false"
+        [mostrarBarcos]="true"
+        [mostrarInfo]="false">
+      </app-tablero>
+
+      <div class="mt-6">
+        <h3 class="text-lg font-semibold mb-3 text-gray-700">Movimientos recibidos:</h3>
+        <div class="max-h-48 overflow-y-auto">
+          <ul class="space-y-2">
+            <li *ngFor="let mov of oponenteJugador.movimientos_defensor; let i = index" 
+                class="flex items-center justify-between p-2 bg-gray-50 rounded">
+              <span class="font-medium">{{ mov.coordenada }}</span>
+              <span [class]="obtenerClaseResultado(mov.acierto, mov.hundido)">
+                {{ obtenerTextoResultado(mov.acierto, mov.hundido) }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón para volver -->
+  <div class="mt-8 flex justify-center">
+    <button 
+      (click)="volver()"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-200">
+      Volver a partidas
+    </button>
+  </div>
+</div>

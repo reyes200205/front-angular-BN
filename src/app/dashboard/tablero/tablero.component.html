@@ -1,0 +1,89 @@
+<!-- tablero.component.html -->
+<div class="bg-white rounded-lg shadow-md p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">
+      {{ tituloTablero }}
+    </h2>
+    <div *ngIf="mostrarInfo" class="text-sm text-gray-600">
+      Disparos: {{ estadisticas.totalDisparos }} | Impactos:
+      {{ estadisticas.impactos }} | Precisión:
+      {{ estadisticas.precision }}%
+    </div>
+  </div>
+
+  <div class="grid grid-cols-9 gap-1 mb-2">
+    <div></div>
+    <div
+      *ngFor="let letra of letras"
+      class="h-8 flex items-center justify-center text-sm font-medium text-gray-600"
+    >
+      {{ letra }}
+    </div>
+  </div>
+
+  <div class="grid grid-cols-9 gap-1">
+    <ng-container *ngFor="let numero of numeros; let filaIndex = index">
+      
+      <div class="h-8 flex items-center justify-center text-sm font-medium text-gray-600">
+        {{ numero }}
+      </div>
+
+      <div
+        *ngFor="let letra of letras; let colIndex = index"
+        class="h-8 w-8 border-2 border-gray-300 transition-all duration-200 flex items-center justify-center text-xs font-bold"
+        [class]="obtenerClaseCelda(letra + numero)"
+        (click)="manejarClick(letra + numero)"
+        (mouseenter)="onCeldaHover(letra + numero)"
+      >
+        {{ obtenerContenidoCelda(letra + numero) }}
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="mt-4 flex flex-wrap gap-4 text-xs">
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-gray-300 border-2 border-gray-400"></div>
+      <span>Agua</span>
+    </div>
+    <div *ngIf="mostrarBarcos" class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-blue-500 border-2 border-blue-600"></div>
+      <span>Barco</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-blue-400 border-2 border-blue-500"></div>
+      <span>Agua (disparado)</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-red-500 border-2 border-red-600"></div>
+      <span>Impacto</span>
+    </div>
+    <div class="flex items-center gap-1">
+      <div class="w-4 h-4 bg-red-800 border-2 border-red-900"></div>
+      <span>Hundido</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="juegoTerminado"
+    class="mt-4 p-4 rounded-lg text-center font-bold text-lg"
+  >
+    <div
+      *ngIf="ganador === 'jugador'"
+      class="bg-green-100 text-green-800"
+    >
+      ¡Has ganado!
+    </div>
+    <div
+      *ngIf="ganador === 'oponente'"
+      class="bg-red-100 text-red-800"
+    >
+      Has perdido
+    </div>
+    <div
+      *ngIf="ganador !== 'jugador' && ganador !== 'oponente' && ganador"
+      class="bg-yellow-100 text-yellow-800"
+    >
+      Juego terminado
+    </div>
+  </div>
+</div>

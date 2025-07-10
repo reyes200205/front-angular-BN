@@ -1,0 +1,8 @@
+.tablero-celda {
+  aspect-ratio: 1;
+}
+
+.grid > div {
+  min-height: 32px;
+  min-width: 32px;
+}
