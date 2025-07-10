@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 
 export interface Partida {
@@ -17,7 +18,7 @@ export interface Partida {
   providedIn: 'root',
 })
 export class EstadisticasService {
-  private baseUrl = 'http://localhost:3333/estadisticas';
+  private baseUrl = `${environment.apiUrl}/estadisticas`;
 
     constructor(private http: HttpClient) {}
 
