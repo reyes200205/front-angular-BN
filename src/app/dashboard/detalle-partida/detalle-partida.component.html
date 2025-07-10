@@ -21,15 +21,18 @@
         Tu tablero ({{ miJugador.usuario.name }})
       </h2>
       
+      
       <app-tablero
         [esPropio]="true"
         [nombreJugador]="miJugador.usuario.name"
-        [posicionesBarcos]="posicionesBarcosOponente"
-        [disparos]="disparosRecibidosOponente"
+        [posicionesBarcos]="posicionesBarcosJugador"
+        [disparos]="disparosRecibidosJugador" 
         [puedeDisparar]="false"
         [mostrarBarcos]="true"
         [mostrarInfo]="false">
       </app-tablero>
+
+
 
       <div class="mt-6">
         <h3 class="text-lg font-semibold mb-3 text-gray-700">Movimientos recibidos:</h3>
@@ -47,20 +50,20 @@
       </div>
     </div>
 
-    <!-- Tablero del oponente -->
+    
     <div *ngIf="oponenteJugador" class="bg-white rounded-lg shadow-md p-6">
       <h2 class="text-xl font-bold mb-4 text-gray-800">
         Tablero de {{ oponenteJugador.usuario.name }}
       </h2>
       
       <app-tablero
-        [esPropio]="false"
-        [nombreJugador]="oponenteJugador.usuario.name"
-        [posicionesBarcos]="posicionesBarcosJugador"
-        [disparos]="disparosRecibidosJugador"
-        [puedeDisparar]="false"
-        [mostrarBarcos]="true"
-        [mostrarInfo]="false">
+          [esPropio]="false"
+          [nombreJugador]="oponenteJugador.usuario.name"
+          [posicionesBarcos]="posicionesBarcosOponente" 
+          [disparos]="disparosRecibidosOponente" 
+          [puedeDisparar]="false"
+          [mostrarBarcos]="true"
+          [mostrarInfo]="false">
       </app-tablero>
 
       <div class="mt-6">
