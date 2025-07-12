@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { AuthWatcherService } from './core/services/auth-watcher.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+export class AppComponent  {
+  constructor(private authWatcherService: AuthWatcherService) {}
 
-  ngOnInit(): void {
-    this.authService.initAuthService();
-  }
 
   title = 'Front';
 }

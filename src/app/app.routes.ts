@@ -12,6 +12,7 @@ import { PartidasIndexComponent } from './dashboard/partidas-index/partidas-inde
 import { MisPartidasComponent } from './dashboard/mis-partidas/mis-partidas.component';
 import { DetallePartidaComponent } from './dashboard/detalle-partida/detalle-partida.component';
 import { EstadisticasComponent } from './dashboard/estadisticas/estadisticas.component';
+import { StreamingComponent } from './shared/streaming.component';
 
 export const routes: Routes = [
   {
@@ -28,6 +29,10 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [GuestGuard]
+  },
+  {
+    path: 'streaming',
+    component: StreamingComponent
   },
   
   {

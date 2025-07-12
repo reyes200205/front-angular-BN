@@ -56,17 +56,32 @@ export class AuthService {
   private token_key = 'auth_token';
   private user_key = 'auth_user';
 
-  constructor(private http: HttpClient, private router: Router) {}
-  
+  constructor(private http: HttpClient, private router: Router) {
+    window.addEventListener('storage', (event) => {
+      if (event.key === this.token_key) {
+        const newToken = event.newValue;
+
+        if (!newToken || newToken.trim().length === 0) {
+          this.isAuthenticatedSubject.next(false);
+        } else {
+          this.validateTokenWithAPI(newToken);
+        }
+      }
+    });
+  }
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.hasToken()
   );
 
-
   private currentUserSubject = new BehaviorSubject<User | null>(
     this.getCurrentUser()
   );
+
+  clearUser(): void {
+    localStorage.removeItem(this.user_key);
+    this.currentUserSubject.next(null);
+  }
 
   getCurrentUser$(): Observable<User | null> {
     return this.currentUserSubject.asObservable();
@@ -173,7 +188,6 @@ export class AuthService {
     return throwError(errorResponse);
   }
 
-
   initAuthService() {
     const token = this.getToken();
     if (token) {
@@ -181,7 +195,6 @@ export class AuthService {
     }
   }
 
-  
   private validateTokenWithAPI(token: string) {
     this.http
       .get(`${this.apiUrl}/auth/me`, {
